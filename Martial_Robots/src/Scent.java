@@ -1,21 +1,19 @@
-import java.awt.Point;
-
 public class Scent {
 
-	private Point scentLocation;
+	private  Coordinate scentLocation;
 	private Direction scentDirection;
 
-	public Scent(Point scentLocation, Direction scentDirection) {
+	public Scent( Coordinate point, Direction scentDirection) {
 
 		this.scentDirection = scentDirection;
-		this.scentLocation = scentLocation;
+		this.scentLocation = point;
 	}
 
-	public Point getScentLocation() {
+	public  Coordinate getScentLocation() {
 		return scentLocation;
 	}
 
-	public void setScentLocation(Point scentLocation) {
+	public void setScentLocation( Coordinate scentLocation) {
 		this.scentLocation = scentLocation;
 	}
 
@@ -25,10 +23,6 @@ public class Scent {
 
 	public void setScentDirection(Direction scentDirection) {
 		this.scentDirection = scentDirection;
-	}
-
-	public boolean equalLocation(Scent randomScent) {
-		return this.scentLocation.equals(randomScent.getScentLocation());
 	}
 
 	public boolean equalDirection(Scent randomScent) {

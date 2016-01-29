@@ -1,50 +1,65 @@
-import java.awt.Point;
 import java.util.ArrayList;
 
 public class Mars {
+	private Coordinate axisOfPlanet;
+	private ArrayList<Robot> activeRobots;
+	private Scent[] scents;
+	private int i = 0;
 
-	private Point areaOfPlanet;
-	private ArrayList<Scent> storedScents = new ArrayList<Scent>();
-	private ArrayList<Robot> activeRobots = new ArrayList<Robot>();
-
-	public Mars(Point areaOfPlanet) {
-			if(!(areaOfPlanet.x>50 || areaOfPlanet.y>50)){
-				this.areaOfPlanet = areaOfPlanet;
-			}else{
-				System.err.println("Area coordinates greater than 50");
-				System.exit(0);
-			}
+	public Mars(Coordinate axisOfPlanet, ArrayList<Robot> activeRobots) {
+		if ((axisOfPlanet.getX() > 50 || axisOfPlanet.getY() > 50)) {
+			throw new Error("Coordinates must be less than 50");
 		}
-	
-	public Point getAreaOfPlanet() {
-		return areaOfPlanet;
+		this.axisOfPlanet = axisOfPlanet;
+		this.activeRobots = activeRobots;
+		scents = new Scent[activeRobots.size()];
+		getLocationsOfRobots();
+		printRobotFinalLocation();
 	}
 
-	public void setAreaOfPlanet(Point areaOfPlanet) {
-		this.areaOfPlanet = areaOfPlanet;
+	public Coordinate getAxisOfPlanet() {
+		return axisOfPlanet;
 	}
 
-	public ArrayList<Scent> getStoredScents() {
-		return storedScents;
-	}
-
-	public void setStoredScents(ArrayList<Scent> storedScents) {
-		this.storedScents = storedScents;
+	public void setAreaOfPlanet(Coordinate areaOfPlanet) {
+		this.axisOfPlanet = areaOfPlanet;
 	}
 
 	public ArrayList<Robot> getActiveRobots() {
 		return activeRobots;
 	}
 
-	public void setActiveRobots(ArrayList<Robot> activeRobots) {
-		this.activeRobots = activeRobots;
-	}
-	
-	public void addRobots(Robot newRobot){
+	public void addRobots(Robot newRobot) {
 		activeRobots.add(newRobot);
 	}
-	
-	public void addScents(Scent newScent){
-		storedScents.add(newScent);
+
+	public void addScents(Scent newScent) {
+		scents[getI()] = newScent;
+		setI(scents[getI()] != null ? ++i : i);
 	}
+
+	public Scent[] getScentsArray() {
+		return scents;
+	}
+
+	public int getI() {
+		return i;
+	}
+
+	public void setI(int i) {
+		this.i = i;
+	}
+
+	public void printRobotFinalLocation() {
+		for (Robot robot : getActiveRobots()) {
+			System.out.println(robot.toString(this));
+		}
+	}
+
+	public void getLocationsOfRobots() {
+		for (Robot robot : getActiveRobots()) {
+			robot.readInstructions(robot.getInstruct().matches("[l|f|r]*") ? robot.getInstruct() : null, this);
+		}
+	}
+
 }

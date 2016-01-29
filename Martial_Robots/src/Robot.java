@@ -1,28 +1,23 @@
-import java.awt.Point;
-
 public class Robot {
 
-	private Mars mars;
-	private Point robotLocation;
+	private Coordinate robotLocation;
 	private Direction robotDirection;
 	private int checkState = 0;
-	private String scentOutpUt = "";
+	private String instruct;
 
-	public Robot(Mars mars, Point robotLocation, Direction robotDirecton) {
-		this.mars = mars;
-		this.robotLocation = robotLocation;
+	public Robot(Coordinate point, Direction robotDirecton, String InstructionsString) {
+		this.robotLocation = point;
 		this.robotDirection = robotDirecton;
-		mars.addRobots(this);
+		this.instruct = InstructionsString;
 	}
 
-	public void readInstructions(String instructions) {
-
+	public void readInstructions(String instructions, Mars mars) {
 		/**
-		 * make sure instructions is less than 100;
+		 * make sure instructions String is less than 100;
 		 */
-		if (instructions.length() >= 100) {
-			System.err.println("instructions length is bigger than 100");
-			System.exit(0);
+		if (instructions == null || instructions.length() >= 100) {
+			throw new Error(
+					"Intructions must conform to being less than 100 and acceptable instruction must be provided");
 		}
 		char[] instructionsChars = instructions.toUpperCase().toCharArray();
 		for (char letters : instructionsChars) {
@@ -34,15 +29,15 @@ public class Robot {
 			switch (letters) {
 			case 'L':
 				turnLeft();
-				System.out.println("Left:" + this.getRobotLocation() + " " + getRobotDirection());
+				System.out.println("Left:" + this.getRobotLocation().toString() + " " + getRobotDirection());
 				break;
 			case 'F':
-				moveStraight();
-				System.out.println("forward:" + this.getRobotLocation() + " " + getRobotDirection());
+				moveStraight(mars);
+				System.out.println("forward:" + this.getRobotLocation().toString() + " " + getRobotDirection());
 				break;
 			case 'R':
 				turnRight();
-				System.out.println("right:" + this.getRobotLocation() + " " + getRobotDirection());
+				System.out.println("right:" + this.getRobotLocation().toString() + " " + getRobotDirection());
 				break;
 			}
 
@@ -86,57 +81,59 @@ public class Robot {
 		}
 	}
 
-	private void moveStraight() {
-		Scent tempScent = new Scent(this.getRobotLocation(), this.getRobotDirection());
-		moveForward(matchesStoredScent(tempScent));
-		if (checkState() == 1) {
-			if (matchesStoredScent(tempScent)) {
-				checkState = 0;
-			}
-			mars.addScents(tempScent);
-			scentOutpUt = tempScent.getScentLocation().getX() + " " + tempScent.getScentLocation().getY() + " "
-					+ tempScent.getScentDirection().toString() + " LOST";
-			return;
-		}
-	}
-
-	public void moveForward(boolean check) {
-		if (check) {
+	private void moveStraight(Mars mars) {
+		Scent tempScent = new Scent(new Coordinate(this.getRobotLocation()), this.getRobotDirection());
+		if (matchesStoredScent(tempScent, mars)) {
 			return;
 		} else {
-			switch (robotDirection) {
-			case North:
-				int getY_North = this.getRobotLocation().y;
-				this.getRobotLocation().setLocation(robotLocation.x, ++getY_North);
-				break;
-			case East:
-				int getX_East = this.getRobotLocation().x;
-				this.getRobotLocation().setLocation(++getX_East, robotLocation.y);
-				break;
-			case South:
-				int getY_South = this.getRobotLocation().y;
-				this.getRobotLocation().setLocation(robotLocation.x, --getY_South);
-				break;
-			case West:
-				int getX_West = this.getRobotLocation().x;
-				this.getRobotLocation().setLocation(--getX_West, robotLocation.y);
-				break;
-			}
+			moveForward(tempScent, mars);
 		}
 	}
 
-	private boolean matchesStoredScent(Scent tempScent) {
-		for (Scent storedScent : mars.getStoredScents()) {
-			if (tempScent.equalLocation(storedScent) && tempScent.equalDirection(storedScent)) {
-				return true;
+	public void moveForward(Scent tempScent, Mars mars) {
+		switch (robotDirection) {
+		case North:
+			int getY_North = this.getRobotLocation().getY();
+			this.getRobotLocation().setLocation(robotLocation.getX(), ++getY_North);
+			break;
+		case East:
+			int getX_East = this.getRobotLocation().getX();
+			this.getRobotLocation().setLocation(++getX_East, robotLocation.getY());
+			break;
+		case South:
+			int getY_South = this.getRobotLocation().getY();
+			this.getRobotLocation().setLocation(robotLocation.getX(), --getY_South);
+			break;
+		case West:
+			int getX_West = this.getRobotLocation().getX();
+			this.getRobotLocation().setLocation(--getX_West, robotLocation.getY());
+			break;
+		}
+		if (checkState(mars) == 1) {
+			mars.addScents(tempScent);
+
+			return;
+		}
+	}
+
+	private boolean matchesStoredScent(Scent tempScent, Mars mars) {
+		for (Scent storedScent : mars.getScentsArray()) {
+			if (storedScent == null) {
+				break;
+			} else {
+				if (storedScent.getScentLocation().equals(tempScent.getScentLocation())
+						&& storedScent.getScentDirection().equals(tempScent.getScentDirection())) {
+					return true;
+				}
 			}
+
 		}
 		return false;
 	}
 
-	public int checkState() {
-		int checkX = this.getRobotLocation().getX() > mars.getAreaOfPlanet().getX() ? 1 : 0;
-		int checkY = this.getRobotLocation().getY() > mars.getAreaOfPlanet().getY() ? 1 : 0;
+	public int checkState(Mars mars) {
+		int checkX = this.getRobotLocation().getX() > mars.getAxisOfPlanet().getX() ? 1 : 0;
+		int checkY = this.getRobotLocation().getY() > mars.getAxisOfPlanet().getY() ? 1 : 0;
 		int checkNegativeX = this.getRobotLocation().getX() < 0 ? 1 : 0;
 		int checkNegativeY = this.getRobotLocation().getY() < 0 ? 1 : 0;
 
@@ -147,12 +144,14 @@ public class Robot {
 		return checkState;
 	}
 
-	@Override
-	public String toString() {
+	public String toString(Mars mars) {
 		String output = "";
 		switch (checkState) {
 		case 1:
-			output = scentOutpUt;
+			int index = mars.getI() > 0 ? mars.getI() - 1 : mars.getI();
+			output = mars.getScentsArray()[index].getScentLocation().getX() + " "
+					+ mars.getScentsArray()[index].getScentLocation().getY() + " "
+					+ mars.getScentsArray()[index].getScentDirection().toString() + " LOST";
 			break;
 		case 0:
 			output = this.getRobotLocation().getX() + " " + this.getRobotLocation().getY() + " "
@@ -162,11 +161,11 @@ public class Robot {
 		return output;
 	}
 
-	public Point getRobotLocation() {
+	public Coordinate getRobotLocation() {
 		return robotLocation;
 	}
 
-	public void setRobotLocation(Point robotLocation) {
+	public void setRobotLocation(Coordinate robotLocation) {
 		this.robotLocation = robotLocation;
 	}
 
@@ -177,4 +176,9 @@ public class Robot {
 	public void setRobotDirection(Direction robotDirection) {
 		this.robotDirection = robotDirection;
 	}
+
+	public String getInstruct() {
+		return instruct;
+	}
+
 }
