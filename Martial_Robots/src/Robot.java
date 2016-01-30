@@ -155,7 +155,7 @@ public class Robot {
 			break;
 		case 0:
 			if(instructionCheck){
-				System.out.println("Robot at Coordinate ("+ this.getRobotLocation()+ ") failed to meet instruction condition");
+				output="Robot at Coordinate ("+ this.getRobotLocation()+ ") failed to meet instruction condition";
 			}
 			else {
                 output = this.getRobotLocation().getX() + " " + this.getRobotLocation().getY() + " "
