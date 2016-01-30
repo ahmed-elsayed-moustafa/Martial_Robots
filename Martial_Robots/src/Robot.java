@@ -6,9 +6,9 @@ public class Robot {
     private String instruct;
     private boolean instructionCheck = false;
 
-    public Robot(Coordinate point, Direction robotDirecton, String InstructionsString) {
+    public Robot(Coordinate point, Direction robotDirection, String InstructionsString) {
         this.robotLocation = point;
-        this.robotDirection = robotDirecton;
+        this.robotDirection = robotDirection;
         this.instruct = InstructionsString;
     }
 
@@ -138,7 +138,7 @@ public class Robot {
         int checkNegativeY = this.getRobotLocation().getY() < 0 ? 1 : 0;
 
         if (checkX == 1 || checkY == 1 || checkNegativeX == 1 || checkNegativeY == 1) {
-            checkState = 1;
+            setCheckState(1);
         }
 
         return checkState;
@@ -175,5 +175,7 @@ public class Robot {
     public int getCheckState() {
         return checkState;
     }
+
+    public void setCheckState(int checkState) { this.checkState = checkState; }
 
 }
