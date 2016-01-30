@@ -4,6 +4,7 @@ public class Robot {
 	private Direction robotDirection;
 	private int checkState = 0;
 	private String instruct;
+	private boolean instructionCheck=false;
 
 	public Robot(Coordinate point, Direction robotDirecton, String InstructionsString) {
 		this.robotLocation = point;
@@ -16,13 +17,13 @@ public class Robot {
 		 * make sure instructions String is less than 100;
 		 */
 		if (instructions == null || instructions.length() >= 100) {
-			throw new Error(
-					"Instructions must conform to being less than 100 characters in length and either contain characters L or F or R");
+			instructionCheck=true;
+			return;
 		}
 		char[] instructionsChars = instructions.toUpperCase().toCharArray();
 		for (char letters : instructionsChars) {
 
-			if (checkState == 1) {
+			if (checkState == 1 || instructionCheck) {
 				break;
 			}
 
@@ -153,8 +154,13 @@ public class Robot {
 					+ mars.getScentsArray()[index].getScentDirection().toString() + " LOST";
 			break;
 		case 0:
-			output = this.getRobotLocation().getX() + " " + this.getRobotLocation().getY() + " "
+			if(instructionCheck){
+				System.out.println("Robot at Coordinate ("+ this.getRobotLocation()+ ") failed to meet instruction condition");
+			}
+			else {
+                output = this.getRobotLocation().getX() + " " + this.getRobotLocation().getY() + " "
 					+ this.getRobotDirection().toString();
+            }
 			break;
 		}
 		return output;

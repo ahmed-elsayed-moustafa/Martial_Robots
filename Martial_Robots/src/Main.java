@@ -10,6 +10,6 @@ public class Main {
 		robots.add(one);
 		robots.add(two);
 		robots.add(three);
-	    new Mars(new Coordinate(5, 3),robots);
+	    new Mars(new Coordinate(5 ,3),robots);
 	}
 }
