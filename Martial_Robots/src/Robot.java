@@ -149,14 +149,14 @@ public class Robot {
     }
 
     public boolean getInstructionCheck() {
-		return instructionCheck;
-	}
+        return instructionCheck;
+    }
 
-	public void setInstructionCheck(boolean instructionCheck) {
-		this.instructionCheck = instructionCheck;
-	}
+    public void setInstructionCheck(boolean instructionCheck) {
+        this.instructionCheck = instructionCheck;
+    }
 
-	public void setRobotLocation(Coordinate robotLocation) {
+    public void setRobotLocation(Coordinate robotLocation) {
         this.robotLocation = robotLocation;
     }
 
@@ -172,8 +172,8 @@ public class Robot {
         return instruct;
     }
 
-	public int getCheckState() {
-		return checkState;
-	}
+    public int getCheckState() {
+        return checkState;
+    }
 
 }
