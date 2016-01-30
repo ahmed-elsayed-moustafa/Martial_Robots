@@ -11,7 +11,7 @@ public class Mars {
 		this.activeRobots = activeRobots;
 		arrayValidation();
 		scents = new Scent[activeRobots.size()];
-		getLocationsOfRobots();
+		startMovementOffRobots();
 		printRobotFinalLocation();
 	}
 
@@ -47,7 +47,7 @@ public class Mars {
 		return output;
 	}
 
-	public void getLocationsOfRobots() {
+	public void startMovementOffRobots() {
 		for (Robot robot : getActiveRobots()) {
 			robot.readInstructions(robot.getInstruct().matches("[l|f|r|L|F|R]+") ? robot.getInstruct() : null, this);
 		}
