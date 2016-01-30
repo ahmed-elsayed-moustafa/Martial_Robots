@@ -144,32 +144,19 @@ public class Robot {
         return checkState;
     }
 
-    public String toString(Mars mars) {
-        String output = "";
-        switch (checkState) {
-            case 1:
-                int index = mars.getI() > 0 ? mars.getI() - 1 : mars.getI();
-                output = mars.getScentsArray()[index].getScentLocation().getX() + " "
-                        + mars.getScentsArray()[index].getScentLocation().getY() + " "
-                        + mars.getScentsArray()[index].getScentDirection().toString() + " LOST";
-                break;
-            case 0:
-                if (instructionCheck) {
-                    output = "Robot at Coordinate (" + this.getRobotLocation() + ") failed to meet instruction condition";
-                } else {
-                    output = this.getRobotLocation().getX() + " " + this.getRobotLocation().getY() + " "
-                            + this.getRobotDirection().toString();
-                }
-                break;
-        }
-        return output;
-    }
-
     public Coordinate getRobotLocation() {
         return robotLocation;
     }
 
-    public void setRobotLocation(Coordinate robotLocation) {
+    public boolean getInstructionCheck() {
+		return instructionCheck;
+	}
+
+	public void setInstructionCheck(boolean instructionCheck) {
+		this.instructionCheck = instructionCheck;
+	}
+
+	public void setRobotLocation(Coordinate robotLocation) {
         this.robotLocation = robotLocation;
     }
 
@@ -184,5 +171,9 @@ public class Robot {
     public String getInstruct() {
         return instruct;
     }
+
+	public int getCheckState() {
+		return checkState;
+	}
 
 }
