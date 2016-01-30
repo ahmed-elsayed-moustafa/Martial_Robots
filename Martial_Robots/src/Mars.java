@@ -9,7 +9,7 @@ public class Mars {
 	public Mars(Coordinate axisOfPlanet, ArrayList<Robot> activeRobots) {
 		this.axisOfPlanet = axisOfPlanet;
 		this.activeRobots = activeRobots;
-		arrayValidation();
+		argumentsValidation();
 		scents = new Scent[activeRobots.size()];
 		startMovementOffRobots();
 		printRobotFinalLocation();
@@ -53,10 +53,10 @@ public class Mars {
 		}
 	}
 
-	public void arrayValidation() {
+	public void argumentsValidation() {
 		if ((activeRobots == null || activeRobots.size() == 0)
 				|| (axisOfPlanet.getX() > 50 || axisOfPlanet.getY() > 50)) {
-			print("invalid parameters in Mars");
+			print("invalid arguments in Mars");
 			System.exit(0);
 		}
 	}
