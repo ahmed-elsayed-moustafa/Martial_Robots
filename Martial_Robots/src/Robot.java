@@ -17,7 +17,7 @@ public class Robot {
 		 */
 		if (instructions == null || instructions.length() >= 100) {
 			throw new Error(
-					"Intructions must conform to being less than 100 and acceptable instruction must be provided");
+					"Instructions must conform to being less than 100 characters in length and either contain characters L or F or R");
 		}
 		char[] instructionsChars = instructions.toUpperCase().toCharArray();
 		for (char letters : instructionsChars) {
@@ -111,7 +111,6 @@ public class Robot {
 		}
 		if (checkState(mars) == 1) {
 			mars.addScents(tempScent);
-
 			return;
 		}
 	}
