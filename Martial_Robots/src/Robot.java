@@ -176,6 +176,8 @@ public class Robot {
         return checkState;
     }
 
-    public void setCheckState(int checkState) { this.checkState = checkState; }
+    public void setCheckState(int checkState) {
+        this.checkState = checkState;
+    }
 
 }
