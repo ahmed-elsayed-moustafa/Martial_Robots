@@ -21,8 +21,8 @@ public class Mars {
 		return axisOfPlanet;
 	}
 
-	public void setAreaOfPlanet(Coordinate areaOfPlanet) {
-		this.axisOfPlanet = areaOfPlanet;
+	public void setAxisOfPlanet(Coordinate axisOfPlanet) {
+		this.axisOfPlanet = axisOfPlanet;
 	}
 
 	public ArrayList<Robot> getActiveRobots() {
