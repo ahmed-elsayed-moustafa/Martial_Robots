@@ -58,7 +58,7 @@ public class Mars {
 
 	public void getLocationsOfRobots() {
 		for (Robot robot : getActiveRobots()) {
-			robot.readInstructions(robot.getInstruct().matches("[l|f|r]*") ? robot.getInstruct() : null, this);
+			robot.readInstructions(robot.getInstruct().matches("[l|f|r]+") ? robot.getInstruct() : null, this);
 		}
 	}
 
