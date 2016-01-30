@@ -11,7 +11,6 @@ public class Mars {
 		this.activeRobots = activeRobots;
 		argumentsValidation();
 		scents = new Scent[activeRobots.size()];
-		startMovementOffRobots();
 		printRobotFinalLocation();
 	}
 
@@ -22,8 +21,10 @@ public class Mars {
 
 	public void printRobotFinalLocation() {
 		for (Robot robot : getActiveRobots()) {
-			print(checkRobotState(robot));
-		}
+			robot.readInstructions(robot.getInstruct().matches("[l|f|r|L|F|R]+") ? robot.getInstruct() : null, this);
+			print("final location: "+checkRobotState(robot));
+			System.out.println();
+		}	
 	}
 
 	public String checkRobotState(Robot robot) {
@@ -37,7 +38,7 @@ public class Mars {
 			break;
 		case 0:
 			if (robot.getInstructionCheck()) {
-				output = "Robot at Coordinate (" + robot.getRobotLocation() + ") failed to meet instruction condition";
+				output = "Robot "+ robot.getAlias()+  " was provided with invalid instructions";
 			} else {
 				output = robot.getRobotLocation().getX() + " " + robot.getRobotLocation().getY() + " "
 						+ robot.getRobotDirection().toString();
@@ -45,12 +46,6 @@ public class Mars {
 			break;
 		}
 		return output;
-	}
-
-	public void startMovementOffRobots() {
-		for (Robot robot : getActiveRobots()) {
-			robot.readInstructions(robot.getInstruct().matches("[l|f|r|L|F|R]+") ? robot.getInstruct() : null, this);
-		}
 	}
 
 	public void argumentsValidation() {

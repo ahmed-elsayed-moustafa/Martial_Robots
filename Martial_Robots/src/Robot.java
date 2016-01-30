@@ -3,16 +3,18 @@ public class Robot {
     private Coordinate robotLocation;
     private Direction robotDirection;
     private int checkState = 0;
-    private String instruct;
+    private String instruct,alias;
     private boolean instructionCheck = false;
-
-    public Robot(Coordinate point, Direction robotDirection, String InstructionsString) {
+    
+    public Robot(String alias,Coordinate point, Direction robotDirection, String InstructionsString) {
         this.robotLocation = point;
         this.robotDirection = robotDirection;
         this.instruct = InstructionsString;
+        this.alias=alias;
     }
 
-    public void readInstructions(String instructions, Mars mars) {
+   
+	public void readInstructions(String instructions, Mars mars) {
         /**
          * make sure instructions String is less than 100;
          */
@@ -179,5 +181,9 @@ public class Robot {
     public void setCheckState(int checkState) {
         this.checkState = checkState;
     }
+
+    public String getAlias() {
+		return alias;
+	}
 
 }
