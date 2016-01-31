@@ -22,7 +22,7 @@ public class Mars {
 	public void printRobotFinalLocation() {
 		for (Robot robot : getActiveRobots()) {
 			robot.readInstructions(robot.getInstruct().matches("[l|f|r|L|F|R]+") ? robot.getInstruct() : null, this);
-			print("final location: "+checkRobotState(robot));
+			print("Robot "+ robot.getAlias()+" final location: "+checkRobotState(robot));
 			System.out.println();
 		}	
 	}
